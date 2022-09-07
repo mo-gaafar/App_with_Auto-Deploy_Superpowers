@@ -9,8 +9,13 @@ in pdf format!!
 1. Public Url to GitHub repository (not private) [URL01]
 <https://github.com/mo-gaafar/App_with_Auto-Deploy_Superpowers>
 
-2. Public URL for your S3 Bucket (aka, your green candidate front-end) [URL02]
-???
+2. Evidence of deployed and functioning front-end application in an S3 bucket [URL02] 
+
+3. and in CloudFront. [URL03]
+
+4. Evidence of healthy back-end application. [URL04]
+
+5. Evidence of Prometheus Server. [URL05]
 
 ## Screenshots
 
@@ -18,7 +23,8 @@ in pdf format!!
 ![SCREENSHOT01](screenshots/SCREENSHOT01.png)
 
 2. Job failed because of unit tests. [SCREENSHOT02]
-![SCREENSHOT02](screenshots/SCREENSHOT02.png)
+![SCREENSHOT02](screenshots/SCREENSHOT02A.png)
+![SCREENSHOT02](screenshots/SCREENSHOT02B.png)
 
 3. Job that failed because of vulnerable packages. [SCREENSHOT03]
 ![SCREENSHOT03](screenshots/SCREENSHOT03.png)
