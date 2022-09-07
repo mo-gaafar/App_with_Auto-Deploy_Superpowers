@@ -82,7 +82,6 @@ jobs:
           name: Front-end tests
           command: |
             cd frontend
-            npm install
             npm run test
             # exit 1
 
@@ -99,7 +98,6 @@ jobs:
           name: Back-end tests
           command: |
             cd backend
-            npm install
             npm run test
             # exit 1
 
@@ -117,9 +115,7 @@ jobs:
           name: Front-end scan
           command: |
             cd frontend
-            npm install
-            npm audit
-            # exit 1
+            npm audit --audit-level=critical
 
   scan-backend:
     docker:
@@ -135,10 +131,7 @@ jobs:
           name: Back-end scan
           command: |
             cd backend
-            npm install
-            npm audit
-            # exit 1
-
+            npm audit --audit-level=critical
 #   deploy-infrastructure:
 #     docker:
 #       # Docker image here that supports AWS CLI
