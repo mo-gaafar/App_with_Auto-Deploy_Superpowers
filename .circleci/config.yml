@@ -126,7 +126,7 @@ jobs:
       - image: circleci/node:16.13.1-bullseye-browsers-legacy
     steps:
       # Checkout code from git
-      - chekcout
+      - checkout
       # Restore from cache
       - restore_cache:
           keys: [backend-build]
