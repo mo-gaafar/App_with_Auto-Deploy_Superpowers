@@ -27,7 +27,8 @@ in pdf format!!
 ![SCREENSHOT02](screenshots/SCREENSHOT02B.png)
 
 3. Job that failed because of vulnerable packages. [SCREENSHOT03]
-![SCREENSHOT03](screenshots/SCREENSHOT03.png)
+![SCREENSHOT03](screenshots/SCREENSHOT03A.png)
+![SCREENSHOT03](screenshots/SCREENSHOT03B.png)
 
 4. An alert from one of your failed builds. [SCREENSHOT04]
 ![SCREENSHOT04](screenshots/SCREENSHOT04.png)
