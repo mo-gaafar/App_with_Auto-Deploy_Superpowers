@@ -148,7 +148,7 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image:
+      - image: circleci/aws-cli:latest
     steps:
       # Checkout code from git
       - checkout
