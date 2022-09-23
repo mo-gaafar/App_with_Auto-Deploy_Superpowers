@@ -12,10 +12,11 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
+            sudo apt-get update 
+            sudo apt-get install -y awscli
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" 
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-            #TODO: dont forget s3
-            #exit 1
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -25,15 +26,15 @@ commands:
       - run:
           name: Revert migrations
           # Add when this will run
+          when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = $(curl --insecure  https://kvdb.io/9C1bBb2UMtg2Ft5Ae8VKHk/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            SUCCESS = $(curl --insecure  https://kvdb.io/9C1bBb2UMtg2Ft5Ae8VKHk/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
             if(( $SUCCESS==1 ));
             then
               cd ~/project/backend
               npm install
-            # Add revert code here. You can find this in the Getting Started section.
-              exit 1
+              npm run migration:revert
             fi
 
 jobs:
@@ -156,6 +157,11 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      # - run:
+      #     name: Install awcli for the destroy-environment operation
+      #     command: |
+      #       sudo apt-get update
+      #       sudo apt-get install -y awscli
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -206,6 +212,11 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
+      # - run:
+      #     name: Install awcli for the destroy-environment operation
+      #     command: |
+      #       sudo apt-get update
+      #       sudo apt-get install -y awscli
       - run:
           name: Install dependencies
           command: |
@@ -230,6 +241,11 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
+      # - run:
+      #     name: Install awcli for the destroy-environment operation
+      #     command: |
+      #       sudo apt-get update
+      #       sudo apt-get install -y awscli
       - run:
           name: Run migrations
           command: |
@@ -256,6 +272,11 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      # - run:
+      #     name: Install awcli for the destroy-environment operation
+      #     command: |
+      #       sudo apt-get update
+      #       sudo apt-get install -y awscli
       - run:
           name: Install dependencies
           command: |
