@@ -191,28 +191,28 @@ jobs:
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
-#  Find the job named `configure-infrastructure` in the config file.
-#   - Write code to set up the EC2 intance to run as our back-end.
-#     - Select a Docker image that supports Ansible.
-#     - Add the SSH key fingerprint to job so that Ansible will have access to the EC2 instance via SSH.
-#     - Attach the "workspace" to the job so that you have access to all the files you need (e.g. inventory file).
-#     - Create an Ansible playbook named `configure-server.yml` in the `.circleci/ansible` folder to set up the backend server. Remember that you are running this Playbook against an EC2 instance that has been programmatically created (inside the CircleCI job). 
-#       - Use username `ubuntu`.  
-#       - Keep your playbook clean and maintainable by using roles. You will need to decide what roles to create and how to split up your code.
-#       - Install Python, if needed.
-#       - Update/upgrade packages.
-#       - Install nodejs.
-#       - Install pm2.
-#       - Configure environment variables (use the `environment` module type in your role):
-#         - `ENVIRONMENT`=`production`
-#         - `TYPEORM_CONNECTION`=`postgres`
-#         - `TYPEORM_ENTITIES`=`./modules/domain/**/*.entity{.ts,.js}`
-#         - `TYPEORM_HOST`={your postgres database hostname in RDS}
-#         - `TYPEORM_PORT`=`5532` (or the port from RDS if it’s different)
-#         - `TYPEORM_USERNAME`={your postgres database username in RDS}
-#         - `TYPEORM_PASSWORD`={your postgres database password in RDS}
-#         - `TYPEORM_DATABASE`={your postgres database name in RDS}
-#       - Install and [Configure PM2](https://www.digitalocean.com/community/tutorials/how-to-use-pm2-to-setup-a-node-js-production-environment-on-an-ubuntu-vps) to run back-end server.
+  #  Find the job named `configure-infrastructure` in the config file.
+  #   - Write code to set up the EC2 intance to run as our back-end.
+  #     - Select a Docker image that supports Ansible.
+  #     - Add the SSH key fingerprint to job so that Ansible will have access to the EC2 instance via SSH.
+  #     - Attach the "workspace" to the job so that you have access to all the files you need (e.g. inventory file).
+  #     - Create an Ansible playbook named `configure-server.yml` in the `.circleci/ansible` folder to set up the backend server. Remember that you are running this Playbook against an EC2 instance that has been programmatically created (inside the CircleCI job).
+  #       - Use username `ubuntu`.
+  #       - Keep your playbook clean and maintainable by using roles. You will need to decide what roles to create and how to split up your code.
+  #       - Install Python, if needed.
+  #       - Update/upgrade packages.
+  #       - Install nodejs.
+  #       - Install pm2.
+  #       - Configure environment variables (use the `environment` module type in your role):
+  #         - `ENVIRONMENT`=`production`
+  #         - `TYPEORM_CONNECTION`=`postgres`
+  #         - `TYPEORM_ENTITIES`=`./modules/domain/**/*.entity{.ts,.js}`
+  #         - `TYPEORM_HOST`={your postgres database hostname in RDS}
+  #         - `TYPEORM_PORT`=`5532` (or the port from RDS if it’s different)
+  #         - `TYPEORM_USERNAME`={your postgres database username in RDS}
+  #         - `TYPEORM_PASSWORD`={your postgres database password in RDS}
+  #         - `TYPEORM_DATABASE`={your postgres database name in RDS}
+  #       - Install and [Configure PM2](https://www.digitalocean.com/community/tutorials/how-to-use-pm2-to-setup-a-node-js-production-environment-on-an-ubuntu-vps) to run back-end server.
 
   configure-infrastructure:
     docker:
@@ -241,8 +241,7 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
 
-
-  # Here's where you will add some code to rollback on failure
+      # Here's where you will add some code to rollback on failure
       - destroy-environment
 
   run-migrations:
@@ -262,9 +261,13 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |
-            # Your code here
-            exit 1
-     # Here's where you will add some code to rollback on failure
+            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
+            then
+                curl --insecure https://kvdb.io/9C1bBb2UMtg2Ft5Ae8VKHk/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+            else
+                curl --insecure https://kvdb.io/9C1bBb2UMtg2Ft5Ae8VKHk/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '0'
+            fi
+      # Here's where you will add some code to rollback on failure
       - destroy-environment
 
 #   deploy-frontend:
