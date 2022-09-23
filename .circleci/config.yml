@@ -12,7 +12,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" 
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             #TODO: dont forget s3
             #exit 1
@@ -209,7 +209,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            pip install --user ansible \
+            pip install --user ansible 
             pip install awscli
 
       - run:
@@ -220,7 +220,6 @@ jobs:
 
       # Here's where you will add some code to rollback on failure
       - destroy-environment
-      -
 
   run-migrations:
     docker:
