@@ -3,6 +3,8 @@ version: 2.1
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    docker:
+      image: cimg/aws:2022.06
     parameters:
       # Add parameter here
     steps:
@@ -243,22 +245,27 @@ jobs:
   # Here's where you will add some code to rollback on failure
       - destroy-environment
 
-#   run-migrations:
-#     docker:
-#       # Docker image here that supports NodeJS
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Run migrations
-#           command: |
-#             # Your code here
-#             exit 1
-#       - run:
-#           name: Send migration results to memstash
-#           command: |
-#             # Your code here
-#             exit 1
-#      # Here's where you will add some code to rollback on failure
+  run-migrations:
+    docker:
+      # Docker image here that supports NodeJS
+      - image: cimg/node:16.13.0
+    steps:
+      # Checkout code from git
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Run migrations
+          command: |
+            npm run migrations > migrations_dump.txt
+            cat migrations_dump.txt
+      - run:
+          name: Send migration results to memstash
+          command: |
+            # Your code here
+            exit 1
+     # Here's where you will add some code to rollback on failure
+      - destroy-environment
 
 #   deploy-frontend:
 #     docker:
