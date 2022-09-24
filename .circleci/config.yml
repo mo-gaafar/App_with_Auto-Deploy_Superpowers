@@ -157,11 +157,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      # - run:
-      #     name: Install awcli for the destroy-environment operation
-      #     command: |
-      #       sudo apt-get update
-      #       sudo apt-get install -y awscli
+
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -190,10 +186,18 @@ jobs:
               --output text)
             echo $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
+
+      - run:
+          name: Save workflow id to workspace
+          command: |
+            echo $CIRCLE_WORKFLOW_ID > workflow_id.txt
+            cat workflow_id.txt
+
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
+            - project/workflow_id.txt
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
@@ -212,11 +216,7 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-      # - run:
-      #     name: Install awcli for the destroy-environment operation
-      #     command: |
-      #       sudo apt-get update
-      #       sudo apt-get install -y awscli
+
       - run:
           name: Install dependencies
           command: |
@@ -241,11 +241,6 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      # - run:
-      #     name: Install awcli for the destroy-environment operation
-      #     command: |
-      #       sudo apt-get update
-      #       sudo apt-get install -y awscli
       - run:
           name: Run migrations
           command: |
@@ -272,11 +267,8 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      # - run:
-      #     name: Install awcli for the destroy-environment operation
-      #     command: |
-      #       sudo apt-get update
-      #       sudo apt-get install -y awscli
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -284,33 +276,55 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            # your code here
+            BACKEND_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
+
             export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
+            echo "${API_URL}" >> frontend/.env
       - run:
           name: Deploy frontend objects
           command: |
-            # your code here
+            cd frontend
+            npm install
+            npm run build
+            # Copy the files to your new S3 Bucket using AWS CLI (compiled front-end files can be found in a folder called `./dist`).
+            aws s3 sync ./dist s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+
       # Here's where you will add some code to rollback on failure
       - revert-migrations
       - destroy-environment
 
-#   deploy-backend:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Deploy backend
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure
+  deploy-backend:
+    docker:
+      # Docker image here that supports Ansible
+      - image: cimg/python:3.10.7
+
+    steps:
+      # Checkout code from git
+      - checkout
+      # Add ssh keys with fingerprint
+      - add_ssh_keys:
+          fingerprints:
+            - da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd
+      # attach workspace
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            pip install --user ansible
+            pip install awscli
+      - run:
+          name: Deploy backend
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt deploy-backend.yml
+
+      # Here's where you will add some code to rollback on failure
+      - revert-migrations
+      - destroy-environment
 
 #   smoke-test:
 #     docker:
@@ -350,24 +364,34 @@ jobs:
 #             # your code here
 #       # Here's where you will add some code to rollback on failure
 
-# cleanup:
-#     docker:
-#       # Docker image here
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Get old stack workflow id
-#           command: |
-#             # your code here
-#             export OldWorkflowID="the id here"
-#             export STACKS=[] #put the list of stacks here
-#       - run:
-#           name: Remove old stacks and files
-#           command: |
-#             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-#             then
-#               # your code here
-#             fi
+cleanup:
+  docker:
+    # Docker image here
+    - image: cimg/aws:2022.06
+  steps:
+    # Checkout code from git
+    - checkout
+    - attach_workspace:
+        at: ~/
+    - run:
+        name: Get old stack workflow id
+        command: |
+          # your code here
+          export OldWorkflowID=$(cat ~/project/workflow_id.txt)
+          export STACKS=[ \
+          "udapeople-backend-$/{OldWorkflowID:0:7/}", \
+          "udapeople-frontend-$/{OldWorkflowID:0:7/}" \
+          ]
+    - run:
+        name: Remove old stacks and files
+        command: |
+          if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+          then
+            echo "Stacks exist"
+            aws cloudformation delete-stack --stack-name $STACKS
+          else
+            echo "Stacks do not exist"
+          fi
 
 workflows:
   default:
@@ -393,10 +417,10 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
