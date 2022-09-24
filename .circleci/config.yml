@@ -295,7 +295,7 @@ jobs:
             # Copy the files to your new S3 Bucket using AWS CLI (compiled front-end files can be found in a folder called `./dist`).
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
-      persist-to-workspace:
+      - persist-to-workspace:
           root: ~/
           paths:
             - project/backend_ip.txt
