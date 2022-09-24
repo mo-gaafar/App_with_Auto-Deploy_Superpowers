@@ -283,6 +283,9 @@ jobs:
 
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}" >> frontend/.env
+            echo "${API_URL}" >> backend_url.txt
+            echo "${API_URL}"
+
       - run:
           name: Deploy frontend objects
           command: |
@@ -290,8 +293,12 @@ jobs:
             npm install
             npm run build
             # Copy the files to your new S3 Bucket using AWS CLI (compiled front-end files can be found in a folder called `./dist`).
-            aws s3 sync ./dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
+      persist-to-workspace:
+          root: ~/
+          paths:
+            - project/backend_ip.txt
       # Here's where you will add some code to rollback on failure
       - revert-migrations
       - destroy-environment
@@ -333,39 +340,60 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # install curl
+            sudo apt-get update
+            sudo apt-get install curl
+            #install aws cli
+            sudo apt-get install awscli
+      - run:
+          name: Get backend url
+          command: |
+            # get backend url
+            API_URL = $(cat backend_url.txt)
+
+
+      - run:
+          name: Backend smoke test.
+          command: |
+            if curl -s ${API_URL} | grep "Welcome"
+            then
+              return 1
+            else
+              return 0
+            fi
+      - run:
+          name: Frontend smoke test.
+          command: |
+            BUCKET_URL=$(aws s3api get-bucket-location --bucket udapeople-${CIRCLE_WORKFLOW_ID:0:7} --query 'LocationConstraint' --output text)
+            if curl -s ${BUCKET_URL} | grep "Welcome"
+            then
+              return 1
+            else
+              return 0
+            fi
+      # Here's where you will add some code to rollback on failure
+
+  cloudfront-update:
+    docker:
+      # Docker image here that supports AWS CLI
+      - image: cimg/aws:2022.06
+    steps:
+      # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
             # your code here
       - run:
-          name: Get backend url
-          command: |
-            # get backend url
-
-      - run:
-          name: Backend smoke test.
-          command: |
-            # your code here
-      - run:
-          name: Frontend smoke test.
+          name: Update cloudfront distribution
           command: |
             # your code here
       # Here's where you will add some code to rollback on failure
-
-#   cloudfront-update:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Update cloudfront distribution
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure
 
 cleanup:
   docker:
@@ -424,7 +452,7 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
