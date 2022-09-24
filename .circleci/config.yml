@@ -290,7 +290,7 @@ jobs:
             npm install
             npm run build
             # Copy the files to your new S3 Bucket using AWS CLI (compiled front-end files can be found in a folder called `./dist`).
-            aws s3 sync ./dist s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws s3 sync ./dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
 
       # Here's where you will add some code to rollback on failure
       - revert-migrations
@@ -326,28 +326,31 @@ jobs:
       - revert-migrations
       - destroy-environment
 
-#   smoke-test:
-#     docker:
-#       # Lightweight Docker image
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#       - run:
-#           name: Backend smoke test.
-#           command: |
-#             # your code here
-#       - run:
-#           name: Frontend smoke test.
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure
+  smoke-test:
+    docker:
+      # Lightweight Docker image
+      - image: cimg/base:2021.10
+    steps:
+      # Checkout code from git
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+      - run:
+          name: Get backend url
+          command: |
+            # get backend url
+
+      - run:
+          name: Backend smoke test.
+          command: |
+            # your code here
+      - run:
+          name: Frontend smoke test.
+          command: |
+            # your code here
+      # Here's where you will add some code to rollback on failure
 
 #   cloudfront-update:
 #     docker:
@@ -419,8 +422,8 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
