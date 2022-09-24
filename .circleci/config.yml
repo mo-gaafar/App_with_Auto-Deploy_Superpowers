@@ -394,34 +394,34 @@ jobs:
             # your code here
       # Here's where you will add some code to rollback on failure
 
-cleanup:
-  docker:
-    # Docker image here
-    - image: cimg/aws:2022.06
-  steps:
-    # Checkout code from git
-    - checkout
-    - attach_workspace:
-        at: ~/
-    - run:
-        name: Get old stack workflow id
-        command: |
-          # your code here
-          export OldWorkflowID=$(cat ~/project/workflow_id.txt)
-          export STACKS=[ \
-          "udapeople-backend-$/{OldWorkflowID:0:7/}", \
-          "udapeople-frontend-$/{OldWorkflowID:0:7/}" \
-          ]
-    - run:
-        name: Remove old stacks and files
-        command: |
-          if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-          then
-            echo "Stacks exist"
-            aws cloudformation delete-stack --stack-name $STACKS
-          else
-            echo "Stacks do not exist"
-          fi
+  cleanup:
+    docker:
+      # Docker image here
+      - image: cimg/aws:2022.06
+    steps:
+      # Checkout code from git
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Get old stack workflow id
+          command: |
+            # your code here
+            export OldWorkflowID=$(cat ~/project/workflow_id.txt)
+            export STACKS=[ \
+            "udapeople-backend-$/{OldWorkflowID:0:7/}", \
+            "udapeople-frontend-$/{OldWorkflowID:0:7/}" \
+            ]
+      - run:
+          name: Remove old stacks and files
+          command: |
+            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+            then
+              echo "Stacks exist"
+              aws cloudformation delete-stack --stack-name $STACKS
+            else
+              echo "Stacks do not exist"
+            fi
 
 workflows:
   default:
