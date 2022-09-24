@@ -290,7 +290,7 @@ jobs:
             npm install
             npm run build
             # Copy the files to your new S3 Bucket using AWS CLI (compiled front-end files can be found in a folder called `./dist`).
-            aws s3 sync ./dist s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 sync ./dist s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
       # Here's where you will add some code to rollback on failure
       - revert-migrations
