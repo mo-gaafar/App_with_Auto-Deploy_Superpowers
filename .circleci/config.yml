@@ -298,7 +298,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/backend_ip.txt
+            - project/backend_url.txt
       # Here's where you will add some code to rollback on failure
       - revert-migrations
       - destroy-environment
