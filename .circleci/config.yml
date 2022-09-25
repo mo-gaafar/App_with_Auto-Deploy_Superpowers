@@ -406,12 +406,12 @@ jobs:
       - run:
           name: Get old stack workflow id
           command: |
-            # your code here
-            export OldWorkflowID=$(cat ~/project/workflow_id.txt)
-            export STACKS=[ \
-            "udapeople-backend-$/{OldWorkflowID:0:7/}", \
-            "udapeople-frontend-$/{OldWorkflowID:0:7/}" \
-            ]
+            export OldWorkflowID=$(aws cloudformation \
+            list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+            --no-paginate --output text)
+
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+            --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
       - run:
           name: Remove old stacks and files
           command: |
