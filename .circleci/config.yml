@@ -14,9 +14,9 @@ commands:
           command: |
             sudo apt-get update 
             sudo apt-get install -y awscli
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" 
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -354,7 +354,7 @@ jobs:
           name: Get backend url
           command: |
             # get backend url
-            API_URL = $(cat backend_url.txt)
+            export API_URL = $(cat backend_url.txt)
 
       - run:
           name: Backend smoke test.
@@ -376,6 +376,8 @@ jobs:
               return 0
             fi
       # Here's where you will add some code to rollback on failure
+      - revert-migrations
+      - destroy-environment
 
   cloudfront-update:
     docker:
@@ -393,6 +395,8 @@ jobs:
           command: |
             # your code here
       # Here's where you will add some code to rollback on failure
+      - revert-migrations
+      - destroy-environment
 
   cleanup:
     docker:
@@ -422,6 +426,8 @@ jobs:
             else
               echo "Stacks do not exist"
             fi
+      - destroy-environment
+      - revert-migrations
 
 workflows:
   default:
