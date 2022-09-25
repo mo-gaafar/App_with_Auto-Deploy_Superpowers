@@ -351,16 +351,12 @@ jobs:
             sudo apt-get install curl
             #install aws cli
             sudo apt-get install awscli
-      - run:
-          name: Get backend url
-          command: |
-            # get backend url
-            export API_URL=$(cat backend_url.txt)
 
       - run:
           name: Backend smoke test.
           command: |
-            if curl -s ${API_URL} | grep "Welcome"
+            export API_URL="$(cat backend_url.txt)/api/status"
+            if curl -s ${API_URL} | grep "ok"
             then
               return 1
             else
@@ -369,7 +365,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            BUCKET_URL=$(aws s3api get-bucket-location --bucket udapeople-${CIRCLE_WORKFLOW_ID:0:7} --query 'LocationConstraint' --output text)
+            BUCKET_URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/" 
             if curl -s ${BUCKET_URL} | grep "Welcome"
             then
               return 1
