@@ -368,9 +368,9 @@ jobs:
             BUCKET_URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/" 
             if curl -s ${BUCKET_URL} | grep "Welcome"
             then
-              exit 1
-            else
               exit 0
+            else
+              exit 1
             fi
       # Here's where you will add some code to rollback on failure
       - revert-migrations
@@ -384,13 +384,12 @@ jobs:
       # Checkout code from git
       - checkout
       - run:
-          name: Install dependencies
-          command: |
-            # your code here
-      - run:
           name: Update cloudfront distribution
           command: |
-            # your code here
+            aws cloudformation deploy \
+              --template-file .circleci/files/cloudfront.yml \
+              --stack-name InitialStack \
+              --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
       # Here's where you will add some code to rollback on failure
       - revert-migrations
       - destroy-environment
