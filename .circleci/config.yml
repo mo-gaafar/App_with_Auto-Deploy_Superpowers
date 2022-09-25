@@ -29,7 +29,7 @@ commands:
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = $(curl --insecure  https://kvdb.io/9C1bBb2UMtg2Ft5Ae8VKHk/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
+            export SUCCESS=$(curl --insecure  https://kvdb.io/9C1bBb2UMtg2Ft5Ae8VKHk/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
             if(( $SUCCESS==1 ));
             then
               cd ~/project/backend
@@ -245,6 +245,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
+            npm install
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
@@ -354,7 +355,7 @@ jobs:
           name: Get backend url
           command: |
             # get backend url
-            export API_URL = $(cat backend_url.txt)
+            export API_URL=$(cat backend_url.txt)
 
       - run:
           name: Backend smoke test.
