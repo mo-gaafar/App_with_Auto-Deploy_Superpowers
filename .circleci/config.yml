@@ -316,7 +316,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd
-      
+      - restore_cache:
+          keys: [backend-build]
       # attach workspace
       - attach_workspace:
           at: ~/
@@ -325,6 +326,8 @@ jobs:
           command: |
             pip install --user ansible
             pip install awscli
+            sudo apt-get install nodejs
+            
       - run:
           name: Deploy backend
           command: |
