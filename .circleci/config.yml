@@ -316,6 +316,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd
+      
       # attach workspace
       - attach_workspace:
           at: ~/
@@ -327,6 +328,13 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            cd backend
+            npm install
+            npm run build
+            cd ~/project
+            tar -zcvf artifact.tar.gz backend/
+            mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/
+            
             cd .circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml
 
@@ -390,7 +398,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --stack-name InitialStack \
-              --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
       # Here's where you will add some code to rollback on failure
       - revert-migrations
       - destroy-environment
@@ -413,7 +421,7 @@ jobs:
 
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
             --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
-            if [ "udapeople-${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]
+            if [ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]
             then
               echo ${OldWorkflowID}
               echo ${CIRCLE_WORKFLOW_ID:0:7}
