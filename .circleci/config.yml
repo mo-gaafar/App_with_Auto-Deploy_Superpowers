@@ -340,6 +340,7 @@ jobs:
             npm run build
             cd ~/project
             tar -zcvf artifact.tar.gz backend/
+            mkdir ~/project/.circleci/ansible/roles/deploy/files/
             mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/
             
             cd .circleci/ansible
