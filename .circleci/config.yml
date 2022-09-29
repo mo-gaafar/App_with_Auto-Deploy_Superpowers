@@ -12,11 +12,11 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            sudo apt-get update 
-            sudo apt-get install -y awscli
-            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" 
-            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            # sudo apt-get update 
+            # sudo apt-get install -y awscli
+            # aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            # aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" 
+            # aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -28,14 +28,14 @@ commands:
           # Add when this will run
           when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            export SUCCESS=$(curl --insecure  https://kvdb.io/9C1bBb2UMtg2Ft5Ae8VKHk/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
-            if(( $SUCCESS==1 ));
-            then
-              cd ~/project/backend
-              npm install
-              npm run migration:revert
-            fi
+            # # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+            # export SUCCESS=$(curl --insecure  https://kvdb.io/9C1bBb2UMtg2Ft5Ae8VKHk/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
+            # if(( $SUCCESS==1 ));
+            # then
+            #   cd ~/project/backend
+            #   npm install
+            #   npm run migration:revert
+            # fi
 
 jobs:
   build-frontend:
@@ -326,12 +326,11 @@ jobs:
           command: |
             pip install --user ansible
             pip install awscli
-           
+
 
             curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
             sudo apt-get install -y nodejs
 
-            
       - run:
           name: Deploy backend
           command: |
@@ -342,7 +341,7 @@ jobs:
             tar -zcvf artifact.tar.gz backend/
             mkdir ~/project/.circleci/ansible/roles/deploy/files/
             mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/
-            
+
             cd .circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml
 
