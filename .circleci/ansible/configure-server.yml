@@ -29,13 +29,7 @@
 
   # Get the environment variables from CircleCI and add to the EC2 instance
   # - `ENVIRONMENT`=`production`
-  #         - `TYPEORM_CONNECTION`=`postgres`
-  #         - `TYPEORM_ENTITIES`=`./modules/domain/**/*.entity{.ts,.js}`
-  #         - `TYPEORM_HOST`={your postgres database hostname in RDS}
-  #         - `TYPEORM_PORT`=`5532` (or the port from RDS if it’s different)
-  #         - `TYPEORM_USERNAME`={your postgres database username in RDS}
-  #         - `TYPEORM_PASSWORD`={your postgres database password in RDS}
-  #         - `TYPEORM_DATABASE`={your postgres database name in RDS}
+
   environment:
     - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"
     - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
@@ -44,6 +38,8 @@
     - TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME')}}"
     - TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD')}}"
     - TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE')}}"
+    - TYPEORM_MIGRATIONS: "{{ lookup('env', 'TYPEORM_MIGRATIONS')}}"
+    - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"
 
     # Add more env vars here
 
