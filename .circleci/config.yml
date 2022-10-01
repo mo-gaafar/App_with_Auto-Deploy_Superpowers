@@ -212,8 +212,7 @@ jobs:
       - checkout
       # Add ssh keys with fingerprint
       - add_ssh_keys:
-          fingerprints:
-            - da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd
+          fingerprints: ["da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd"]
 
       # attach workspace
       - attach_workspace:
@@ -328,9 +327,9 @@ jobs:
           name: Install aws cli
           command: |
             pip install awscli
-      - add_ssh_keys:
-          fingerprints:
-            - da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd
+      - add_ssh_keys: 
+        fingerprints:["da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd"]
+
       - attach_workspace:
           at: ~/
       - run:
@@ -382,8 +381,8 @@ jobs:
           command: |
             export API_URL="$(cat backend_url.txt)/api/status"
             echo $API_URL
-            curl -s ${API_URL}
-            if curl -s ${API_URL} | grep "ok"
+            # curl ${API_URL}
+            if curl ${API_URL} | grep "ok"
             then
               exit 0
             else
