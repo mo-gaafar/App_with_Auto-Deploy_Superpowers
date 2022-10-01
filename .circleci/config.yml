@@ -327,8 +327,8 @@ jobs:
           name: Install aws cli
           command: |
             pip install awscli
-      - add_ssh_keys: 
-        fingerprints:["da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd"]
+      - add_ssh_keys:
+          fingerprints: ["da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd"]
 
       - attach_workspace:
           at: ~/
