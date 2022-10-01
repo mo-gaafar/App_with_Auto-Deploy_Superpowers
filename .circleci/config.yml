@@ -382,7 +382,7 @@ jobs:
           command: |
             export API_URL="$(cat backend_url.txt)/api/status"
             echo $API_URL
-            curl 
+            curl -s ${API_URL}
             if curl -s ${API_URL} | grep "ok"
             then
               exit 0
