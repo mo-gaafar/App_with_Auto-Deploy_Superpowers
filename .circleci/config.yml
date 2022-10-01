@@ -308,7 +308,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.11
+      - image: cimg/python:3.10
 
     steps:
       # Checkout code from git
@@ -323,15 +323,22 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+          name: Install Node.js 13.8.0
+          command: |
+            # Install Node.js LTS version as our base Node.js version
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+            sudo apt install -y nodejs
+            # Use n version manager to use Node.js v13.8.0
+            sudo npm install --global n
+            sudo n 13.8.0
+      - run:
           name: Install dependencies
           command: |
-            
-            apk add --update tar gzip ansible nodejs npm curl openssh-client
-            pip install --user ansible
-            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-            unzip awscli-bundle.zip
-            ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-            apk add --update ansible npm nodejs 
+            python3 -m pip install --user ansible
+      - run:
+          name: Install aws cli
+          command: |
+            pip install awscli
 
       - run:
           name: Deploy backend
