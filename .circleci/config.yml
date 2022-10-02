@@ -157,9 +157,9 @@ jobs:
             npm install --save-dev winston@2.x.x
       - save_cache:
           paths:
-            - [backend/node_modules]
-            - [backend/package-lock.json]
-            - [backend/package.json]
+            - backend/node_modules
+            - backend/package-lock.json
+            - backend/package.json
 
           key: backend-scan
 
