@@ -82,7 +82,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-test]
       # Your job code here
       - run:
           name: Front-end tests
@@ -90,6 +90,10 @@ jobs:
             cd frontend
             npm run test
             # exit 1
+      # Save to cache
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-test
 
   test-backend:
     docker:
@@ -98,7 +102,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-test]
       # Your job code here
       - run:
           name: Back-end tests
@@ -106,6 +110,9 @@ jobs:
             cd backend
             npm run test
             # exit 1
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-test
 
   scan-frontend:
     docker:
@@ -115,7 +122,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-scan]
       # Your job code here
       - run:
           name: Front-end scan
@@ -126,9 +133,8 @@ jobs:
             npm audit fix --force
             npm audit --audit-level=critical
       - save_cache:
-          paths:
-            - frontend/node_modules
-          key: frontend-build
+          paths: [frontend/node_modules]
+          key: frontend-test
 
   scan-backend:
     docker:
@@ -138,7 +144,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-scan]
       # Your job code here
       - run:
           name: Back-end scan
@@ -148,9 +154,8 @@ jobs:
             npm audit fix --force
             npm audit --audit-level=critical
       - save_cache:
-          paths:
-            - backend/node_modules
-          key: backend-build
+          paths: [backend/node_modules]
+          key: backend-test
 
   deploy-infrastructure:
     docker:
