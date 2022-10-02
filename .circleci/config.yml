@@ -45,7 +45,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [frontend-build-{{ epoch }}]
       - run:
           name: Build front-end
           command: |
@@ -55,7 +55,7 @@ jobs:
             # exit 1
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build-${CIRCLE_WORKFLOW_ID:0:7}
+          key: frontend-build-{{ epoch }}
 
   build-backend:
     docker:
@@ -63,7 +63,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [backend-build-{{ epoch }}]
       - run:
           name: Back-end build
           command: |
@@ -73,7 +73,7 @@ jobs:
             # exit 1
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build-${CIRCLE_WORKFLOW_ID:0:7}
+          key: backend-build-{{ epoch }}
 
   test-frontend:
     docker:
@@ -82,7 +82,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [frontend-build-{{ epoch }}]
       # Your job code here
       - run:
           name: Front-end tests
@@ -93,7 +93,7 @@ jobs:
       # Save to cache
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-test-${CIRCLE_WORKFLOW_ID:0:7}
+          key: frontend-test-{{ epoch }}
 
   test-backend:
     docker:
@@ -102,7 +102,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [backend-build-{{ epoch }}]
       # Your job code here
       - run:
           name: Back-end tests
@@ -112,7 +112,7 @@ jobs:
             # exit 1
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-test-${CIRCLE_WORKFLOW_ID:0:7}
+          key: backend-test-{{ epoch }}
 
   scan-frontend:
     docker:
@@ -122,7 +122,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [frontend-build-{{ epoch }}]
       # Your job code here
       - run:
           name: Front-end scan
@@ -134,7 +134,7 @@ jobs:
             npm audit --audit-level=critical
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-scan-${CIRCLE_WORKFLOW_ID:0:7}
+          key: frontend-scan-{{ epoch }}
 
   scan-backend:
     docker:
@@ -144,7 +144,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [backend-build-{{ epoch }}]
       # Your job code here
       - run:
           name: Back-end scan
@@ -161,7 +161,7 @@ jobs:
             - backend/package-lock.json
             - backend/package.json
 
-          key: backend-scan-${CIRCLE_WORKFLOW_ID:0:7}
+          key: backend-scan-{{ epoch }}
 
   deploy-infrastructure:
     docker:
@@ -252,7 +252,7 @@ jobs:
       # Checkout code from git
       - checkout
       - restore_cache:
-          keys: [backend-scan-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [backend-scan-{{ epoch }}]
       - run:
           name: Run migrations
           command: |
@@ -283,7 +283,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - restore_cache:
-          keys: [frontend-scan-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [frontend-scan-{{ epoch }}]
       - run:
           name: Install dependencies
           command: |
@@ -324,7 +324,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-scan-${CIRCLE_WORKFLOW_ID:0:7}]
+          keys: [backend-scan-{{ epoch }}]
       - run:
           name: Install Node.js 13.8.0
           command: |
