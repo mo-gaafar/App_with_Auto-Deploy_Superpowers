@@ -45,7 +45,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Build front-end
           command: |
@@ -55,7 +55,7 @@ jobs:
             # exit 1
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build
+          key: frontend-build-${CIRCLE_WORKFLOW_ID:0:7}
 
   build-backend:
     docker:
@@ -63,7 +63,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Back-end build
           command: |
@@ -73,7 +73,7 @@ jobs:
             # exit 1
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build
+          key: backend-build-${CIRCLE_WORKFLOW_ID:0:7}
 
   test-frontend:
     docker:
@@ -82,7 +82,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       # Your job code here
       - run:
           name: Front-end tests
@@ -93,7 +93,7 @@ jobs:
       # Save to cache
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-test
+          key: frontend-test-${CIRCLE_WORKFLOW_ID:0:7}
 
   test-backend:
     docker:
@@ -102,7 +102,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       # Your job code here
       - run:
           name: Back-end tests
@@ -112,7 +112,7 @@ jobs:
             # exit 1
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-test
+          key: backend-test-${CIRCLE_WORKFLOW_ID:0:7}
 
   scan-frontend:
     docker:
@@ -122,7 +122,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       # Your job code here
       - run:
           name: Front-end scan
@@ -134,7 +134,7 @@ jobs:
             npm audit --audit-level=critical
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-scan
+          key: frontend-scan-${CIRCLE_WORKFLOW_ID:0:7}
 
   scan-backend:
     docker:
@@ -144,7 +144,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       # Your job code here
       - run:
           name: Back-end scan
@@ -161,7 +161,7 @@ jobs:
             - backend/package-lock.json
             - backend/package.json
 
-          key: backend-scan
+          key: backend-scan-${CIRCLE_WORKFLOW_ID:0:7}
 
   deploy-infrastructure:
     docker:
@@ -252,7 +252,7 @@ jobs:
       # Checkout code from git
       - checkout
       - restore_cache:
-          keys: [backend-scan]
+          keys: [backend-scan-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Run migrations
           command: |
@@ -283,7 +283,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - restore_cache:
-          keys: [frontend-scan]
+          keys: [frontend-scan-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Install dependencies
           command: |
@@ -324,7 +324,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-scan]
+          keys: [backend-scan-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Install Node.js 13.8.0
           command: |
