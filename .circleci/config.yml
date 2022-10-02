@@ -45,7 +45,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build-{{ epoch }}]
+          keys: 
+            - frontend-build-{{ epoch }}
       - run:
           name: Build front-end
           command: |
@@ -63,7 +64,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-{{ epoch }}]
+          keys: 
+            - backend-build-{{ epoch }}
       - run:
           name: Back-end build
           command: |
@@ -82,7 +84,8 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build-{{ epoch }}]
+          keys: 
+            - frontend-build-{{ epoch }}
       # Your job code here
       - run:
           name: Front-end tests
@@ -102,7 +105,8 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build-{{ epoch }}]
+          keys: 
+            - backend-build-{{ epoch }}
       # Your job code here
       - run:
           name: Back-end tests
@@ -122,7 +126,8 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-build-{{ epoch }}]
+          keys: 
+            - frontend-build-{{ epoch }}
       # Your job code here
       - run:
           name: Front-end scan
@@ -144,7 +149,8 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-build-{{ epoch }}]
+          keys: 
+            - backend-build-{{ epoch }}
       # Your job code here
       - run:
           name: Back-end scan
@@ -252,7 +258,8 @@ jobs:
       # Checkout code from git
       - checkout
       - restore_cache:
-          keys: [backend-scan-{{ epoch }}]
+          keys: 
+            - backend-scan-{{ epoch }}
       - run:
           name: Run migrations
           command: |
@@ -283,7 +290,8 @@ jobs:
       - attach_workspace:
           at: ~/
       - restore_cache:
-          keys: [frontend-scan-{{ epoch }}]
+          keys: 
+            - frontend-scan-{{ epoch }}
       - run:
           name: Install dependencies
           command: |
@@ -324,7 +332,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-scan-{{ epoch }}]
+          keys: 
+            - backend-scan-{{ epoch }}
       - run:
           name: Install Node.js 13.8.0
           command: |
