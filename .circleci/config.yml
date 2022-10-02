@@ -212,7 +212,7 @@ jobs:
       - checkout
       # Add ssh keys with fingerprint
       - add_ssh_keys:
-          fingerprints: ["da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd"]
+          fingerprints: ["3c:a8:eb:f1:9b:bf:90:97:ee:41:6d:38:d6:bf:6a:d8"]
 
       # attach workspace
       - attach_workspace:
@@ -328,7 +328,7 @@ jobs:
           command: |
             pip install awscli
       - add_ssh_keys:
-          fingerprints: ["da:ec:b9:c7:f1:86:2c:eb:67:da:82:8b:c4:0d:fe:dd"]
+          fingerprints: ["3c:a8:eb:f1:9b:bf:90:97:ee:41:6d:38:d6:bf:6a:d8"]
 
       - attach_workspace:
           at: ~/
