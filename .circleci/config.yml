@@ -46,7 +46,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - frontend-build-{{ .BuildNum }}
+            - frontend-build-{{ .Revision }}
       - run:
           name: Build front-end
           command: |
@@ -56,7 +56,7 @@ jobs:
             # exit 1
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build-{{ .BuildNum }}
+          key: frontend-build-{{ .Revision }}
 
   build-backend:
     docker:
@@ -65,7 +65,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - backend-build-{{ .BuildNum }}
+            - backend-build-{{ .Revision }}
       - run:
           name: Back-end build
           command: |
@@ -75,7 +75,7 @@ jobs:
             # exit 1
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build-{{ .BuildNum }}
+          key: backend-build-{{ .Revision }}
 
   test-frontend:
     docker:
@@ -85,7 +85,7 @@ jobs:
       # Restore from cache
       - restore_cache:
           keys: 
-            - frontend-build-{{ .BuildNum }}
+            - frontend-build-{{ .Revision }}
       # Your job code here
       - run:
           name: Front-end tests
@@ -96,7 +96,7 @@ jobs:
       # Save to cache
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-test-{{ .BuildNum }}
+          key: frontend-test-{{ .Revision }}
 
   test-backend:
     docker:
@@ -106,7 +106,7 @@ jobs:
       # Restore from cache
       - restore_cache:
           keys: 
-            - backend-build-{{ .BuildNum }}
+            - backend-build-{{ .Revision }}
       # Your job code here
       - run:
           name: Back-end tests
@@ -116,7 +116,7 @@ jobs:
             # exit 1
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-test-{{ .BuildNum }}
+          key: backend-test-{{ .Revision }}
 
   scan-frontend:
     docker:
@@ -127,7 +127,7 @@ jobs:
       # Restore from cache
       - restore_cache:
           keys: 
-            - frontend-build-{{ .BuildNum }}
+            - frontend-build-{{ .Revision }}
       # Your job code here
       - run:
           name: Front-end scan
@@ -139,7 +139,7 @@ jobs:
             npm audit --audit-level=critical
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-scan-{{ .BuildNum }}
+          key: frontend-scan-{{ .Revision }}
 
   scan-backend:
     docker:
@@ -150,7 +150,7 @@ jobs:
       # Restore from cache
       - restore_cache:
           keys: 
-            - backend-build-{{ .BuildNum }}
+            - backend-build-{{ .Revision }}
       # Your job code here
       - run:
           name: Back-end scan
@@ -167,7 +167,7 @@ jobs:
             - backend/package-lock.json
             - backend/package.json
 
-          key: backend-scan-{{ .BuildNum }}
+          key: backend-scan-{{ .Revision }}
 
   deploy-infrastructure:
     docker:
@@ -259,7 +259,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - backend-scan-{{ .BuildNum }}
+            - backend-scan-{{ .Revision }}
       - run:
           name: Run migrations
           command: |
@@ -291,7 +291,7 @@ jobs:
           at: ~/
       - restore_cache:
           keys: 
-            - frontend-scan-{{ .BuildNum }}
+            - frontend-scan-{{ .Revision }}
       - run:
           name: Install dependencies
           command: |
@@ -333,7 +333,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - backend-scan-{{ .BuildNum }}
+            - backend-scan-{{ .Revision }}
       - run:
           name: Install Node.js 13.8.0
           command: |
