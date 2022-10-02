@@ -161,6 +161,11 @@ jobs:
             npm audit --audit-level=critical
             npm install --save-dev reflect-metadata@0.1.12
             npm install --save-dev winston@2.x.x
+            npm install --save-dev rxjs@^7.1.0
+            npm install --save-dev @nestjs/common@^6.7.0
+            npm install --save-dev @nestjs/core@^9.0.0
+            npm install --save-dev typescript@>=4.3
+            npm install --save-dev passport@^0.4.0
       - save_cache:
           paths:
             - backend/node_modules
@@ -265,6 +270,7 @@ jobs:
           command: |
             cd backend
             npm install
+            
             sudo npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
