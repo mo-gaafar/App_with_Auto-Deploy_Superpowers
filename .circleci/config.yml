@@ -162,7 +162,6 @@ jobs:
             npm audit fix --audit-level=critical --force
             npm audit fix --force
             npm audit --audit-level=critical
-
             # npm install --save-dev reflect-metadata@0.1.12
             # npm install --save-dev winston@2.x.x
             # npm install --save-dev rxjs@^7.1.0
