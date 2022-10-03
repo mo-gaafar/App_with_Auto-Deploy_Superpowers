@@ -356,7 +356,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - backend-scan-{{ .Revision }}
+            - backend-build-{{ .Revision }}
       - run:
           name: Install Node.js 13.8.0
           command: |
