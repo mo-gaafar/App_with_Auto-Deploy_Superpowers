@@ -328,7 +328,7 @@ jobs:
               --output text)
 
             export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}" >> frontend/.env
+            echo "API_URL=${API_URL}" >> frontend/.env
             echo "${API_URL}" >> backend_url.txt
             echo "${API_URL}"
 
@@ -434,8 +434,8 @@ jobs:
             then
               exit 0
             else
-              #edit later (to throw error)
-              exit 0
+              
+              exit 1
             fi
       - run:
           name: Frontend smoke test.
