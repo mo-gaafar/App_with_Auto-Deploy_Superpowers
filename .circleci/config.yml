@@ -45,7 +45,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: 
+          keys:
             - frontend-build-{{ .Revision }}
       - run:
           name: Build front-end
@@ -64,13 +64,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: 
+          keys:
             - backend-build-{{ .Revision }}
       - run:
           name: Back-end build
           command: |
             cd backend
-            rm package-lock.json
 
             npm install
             npm run build
@@ -86,7 +85,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: 
+          keys:
             - frontend-build-{{ .Revision }}
       # Your job code here
       - run:
@@ -107,7 +106,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: 
+          keys:
             - backend-build-{{ .Revision }}
       # Your job code here
       - run:
@@ -128,7 +127,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: 
+          keys:
             - frontend-build-{{ .Revision }}
       # Your job code here
       - run:
@@ -151,7 +150,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: 
+          keys:
             - backend-build-{{ .Revision }}
       # Your job code here
       - run:
@@ -163,7 +162,7 @@ jobs:
             npm audit fix --force
             npm audit --audit-level=critical
             npm install
-            
+
             # npm install --save-dev reflect-metadata@0.1.12
             # npm install --save-dev winston@2.x.x
             # npm install --save-dev rxjs@^7.1.0
@@ -268,7 +267,7 @@ jobs:
       # Checkout code from git
       - checkout
       - restore_cache:
-          keys: 
+          keys:
             - backend-scan-{{ .Revision }}
       - run:
           name: Run migrations
@@ -276,7 +275,7 @@ jobs:
             cd backend
             npm cache verify
             npm install
-            
+
             sudo npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
@@ -302,7 +301,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - restore_cache:
-          keys: 
+          keys:
             - frontend-scan-{{ .Revision }}
       - run:
           name: Install dependencies
@@ -344,7 +343,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: 
+          keys:
             - backend-scan-{{ .Revision }}
       - run:
           name: Install Node.js 13.8.0
