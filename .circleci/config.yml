@@ -70,6 +70,8 @@ jobs:
           name: Back-end build
           command: |
             cd backend
+            rm package-lock.json
+
             npm install
             npm run build
             # exit 1
@@ -156,16 +158,19 @@ jobs:
           name: Back-end scan
           command: |
             cd backend
+            npm cache verify
             npm audit fix --audit-level=critical --force
             npm audit fix --force
             npm audit --audit-level=critical
-            npm install --save-dev reflect-metadata@0.1.12
-            npm install --save-dev winston@2.x.x
-            npm install --save-dev rxjs@^7.1.0
-            npm install --save-dev @nestjs/common@^6.7.0
-            npm install --save-dev @nestjs/core@^9.0.0
-            npm install --save-dev typescript@>=4.3
-            npm install --save-dev passport@^0.4.0
+            npm install
+            
+            # npm install --save-dev reflect-metadata@0.1.12
+            # npm install --save-dev winston@2.x.x
+            # npm install --save-dev rxjs@^7.1.0
+            # npm install --save-dev @nestjs/common@^6.7.0
+            # npm install --save-dev @nestjs/core@^9.0.0
+            # npm install --save-dev typescript@>=4.3
+            # npm install --save-dev passport@^0.4.0
       - save_cache:
           paths:
             - backend/node_modules
@@ -269,6 +274,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
+            npm cache verify
             npm install
             
             sudo npm run migrations > migrations_dump.txt
@@ -366,6 +372,7 @@ jobs:
           name: Deploy backend
           command: |
             cd backend
+            npm cache verify
             npm i
             echo ENVIROMENT=development > ".env"
             echo TYPEORM_CONNECTION=postgres >> ".env"
