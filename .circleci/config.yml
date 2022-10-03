@@ -280,7 +280,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - backend-scan-{{ .Revision }}
+            - backend-build-{{ .Revision }}
       - run:
           name: Run migrations
           command: |
