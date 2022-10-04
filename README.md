@@ -1,64 +1,75 @@
-We are archiving this repository because we do not want learners to push personal development to the current repository. If you have any issues or suggestions to make, feel free to:
-- Utilize the https://knowledge.udacity.com/ forum to seek help on content-specific issues.
-- [Submit a support ticket](https://udacity.zendesk.com/hc/en-us/requests/new) along with the link to your forked repository. 
-- If you are an enterprise learner, please [Submit a support ticket here](https://udacityenterprise.zendesk.com/hc/en-us/requests/new?ticket_form_id=360000279131)
+# Project 3 Submission
 
-## Give your Application Auto-Deploy Superpowers
+## Presentation PDF
 
-In this project, you will prove your mastery of the following learning objectives:
+[Project Presentation](Presentation.pdf)
 
-- Explain the fundamentals and benefits of CI/CD to achieve, build, and deploy automation for cloud-based software products.
-- Utilize Deployment Strategies to design and build CI/CD pipelines that support Continuous Delivery processes.
-- Utilize a configuration management tool to accomplish deployment to cloud-based servers.
-- Surface critical server errors for diagnosis using centralized structured logging.
+## URLs
 
-![Diagram of CI/CD Pipeline we will be building.](udapeople.png)
+1. Public Url to GitHub repository [URL01]
+<https://github.com/mo-gaafar/App_with_Auto-Deploy_Superpowers>
 
-### Instructions
+2. Evidence of deployed and functioning front-end application in an S3 bucket [URL02] 
+<http://udapeople-47c6836.s3-website-us-east-1.amazonaws.com/#/employees>
 
-* [Selling CI/CD](instructions/0-selling-cicd.md)
-* [Getting Started](instructions/1-getting-started.md)
-* [Deploying Working, Trustworthy Software](instructions/2-deploying-trustworthy-code.md)
-* [Configuration Management](instructions/3-configuration-management.md)
-* [Turn Errors into Sirens](instructions/4-turn-errors-into-sirens.md)
+- [URL02_SCREENSHOT]
 
-### Project Submission
+    ![URL02_SCREENSHOT](screenshots/URL02_SCREENSHOT.png)
 
-For your submission, please submit the following:
+3. Cloudfront CDN [URL03] [Cloudfront URL](https://du2suqh3yregj.cloudfront.net/)
 
-- A text file named `urls.txt` including:
-  1. Public Url to GitHub repository (not private) [URL01]
-  1. Public URL for your S3 Bucket (aka, your green candidate front-end) [URL02]
-  1. Public URL for your CloudFront distribution (aka, your blue production front-end) [URL03]
-  1. Public URLs to deployed application back-end in EC2 [URL04]
-  1. Public URL to your Prometheus Server [URL05]
-- Your screenshots in JPG or PNG format, named using the screenshot number listed in the instructions. These screenshots should be included in your code repository in the root folder.
-  1. Job failed because of compile errors. [SCREENSHOT01]
-  1. Job failed because of unit tests. [SCREENSHOT02]
-  1. Job that failed because of vulnerable packages. [SCREENSHOT03]
-  1. An alert from one of your failed builds. [SCREENSHOT04]
-  1. Appropriate job failure for infrastructure creation. [SCREENSHOT05]
-  1. Appropriate job failure for the smoke test job. [SCREENSHOT06]
-  1. Successful rollback after a failed smoke test. [SCREENSHOT07]  
-  1. Successful promotion job. [SCREENSHOT08]
-  1. Successful cleanup job. [SCREENSHOT09]
-  1. Only deploy on pushed to `master` branch. [SCREENSHOT10]
-  1. Provide a screenshot of a graph of your EC2 instance including available memory, available disk space, and CPU usage. [SCREENSHOT11]
-  1. Provide a screenshot of an alert that was sent by Prometheus. [SCREENSHOT12]
+- Provide a screenshot showing the evidence of deployed and functioning front-end application in CloudFront (aka, your production front-end). [URL03_SCREENSHOT]
+    ![URL03_SCREENSHOT](screenshots/URL03_SCREENSHOT.png)
 
-- Your presentation should be in PDF format named "presentation.pdf" and should be included in your code repository root folder. 
+4. Evidence of healthy back-end application. [URL04]
 
-Before you submit your project, please check your work against the project rubric. If you haven’t satisfied each criterion in the rubric, then revise your work so that you have met all the requirements. 
+- Provide a screenshot showing the evidence of a healthy backend application. The backend endpoint status should show a healthy response. [URL04_SCREENSHOT]
+![URL04_SCREENSHOT](screenshots/URL04_SCREENSHOT.png)
 
-### Built With
+5. Evidence of Prometheus Server. [URL05]
 
-- [Circle CI](www.circleci.com) - Cloud-based CI/CD service
-- [Amazon AWS](https://aws.amazon.com/) - Cloud services
-- [AWS CLI](https://aws.amazon.com/cli/) - Command-line tool for AWS
-- [CloudFormation](https://aws.amazon.com/cloudformation/) - Infrastrcuture as code
-- [Ansible](https://www.ansible.com/) - Configuration management tool
-- [Prometheus](https://prometheus.io/) - Monitoring tool
+- Provide a screenshot of your Prometheus server showing UP state [URL05_SCREENSHOT]
+![URL05_SCREENSHOT](screenshots/URL05_SCREENSHOT.png)
 
-### License
+## Screenshots
 
-[License](LICENSE.md)
+1. Job failed because of compile errors. [SCREENSHOT01]
+![SCREENSHOT01](screenshots/SCREENSHOT01.png)
+
+2. Job failed because of unit tests. [SCREENSHOT02]
+![SCREENSHOT02](screenshots/SCREENSHOT02A.png)
+![SCREENSHOT02](screenshots/SCREENSHOT02B.png)
+
+3. Job that failed because of vulnerable packages. [SCREENSHOT03]
+![SCREENSHOT03](screenshots/SCREENSHOT03A.png)
+![SCREENSHOT03](screenshots/SCREENSHOT03B.png)
+
+4. An alert from one of your failed builds. [SCREENSHOT04]
+![SCREENSHOT04](screenshots/SCREENSHOT04.png)
+
+5. Appropriate job failure for infrastructure creation. [SCREENSHOT05]
+![SCREENSHOT05](screenshots/SCREENSHOT05.png)
+
+6. Appropriate job failure for the smoke test job. [SCREENSHOT06]
+![SCREENSHOT06](screenshots/SCREENSHOT06.png)
+
+7. Successful rollback after a failed smoke test. [SCREENSHOT07]
+![SCREENSHOT07](screenshots/SCREENSHOT07.png)
+
+8. Successful promotion job. [SCREENSHOT08]
+![SCREENSHOT08](screenshots/SCREENSHOT08.png)
+
+9. Successful cleanup job. [SCREENSHOT09]
+![SCREENSHOT09](screenshots/SCREENSHOT09.png)
+
+10. Only deploy on pushed to master branch. [SCREENSHOT10]
+![SCREENSHOT10](screenshots/SCREENSHOT10.png)
+
+11. Provide a screenshot of a graph of your EC2 instance including available memory, available disk space, and CPU usage. [SCREENSHOT11]
+![SCREENSHOT11](screenshots/SCREENSHOT11A.png)
+![SCREENSHOT11](screenshots/SCREENSHOT11B.png)
+![SCREENSHOT11](screenshots/SCREENSHOT11C.png)
+
+12. Provide a screenshot of an alert that was sent by Prometheus. [SCREENSHOT12]
+![SCREENSHOT12](screenshots/SCREENSHOT12.png)
+
