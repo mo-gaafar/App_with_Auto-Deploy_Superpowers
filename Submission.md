@@ -2,7 +2,7 @@
 
 ## Presentation PDF
 
-in pdf format!!
+[Project Presentation](Presentation.pdf)
 
 ## URLs
 
@@ -10,12 +10,28 @@ in pdf format!!
 <https://github.com/mo-gaafar/App_with_Auto-Deploy_Superpowers>
 
 2. Evidence of deployed and functioning front-end application in an S3 bucket [URL02] 
+<http://udapeople-590e97c.s3-website-us-east-1.amazonaws.com/#/employees>
 
-3. and in CloudFront. [URL03]
+[URL02_SCREENSHOT]
+
+![URL02_SCREENSHOT](screenshots/URL02_SCREENSHOT.png)
+
+3. [URL03] [Cloudfront URL](https://du2suqh3yregj.cloudfront.net/)
+
+[URL03_SCREENSHOT]
+
+![URL03_SCREENSHOT](screenshots/URL03_SCREENSHOT.png)
 
 4. Evidence of healthy back-end application. [URL04]
 
+[URL04_SCREENSHOT]
+
+![URL04_SCREENSHOT](screenshots/URL04_SCREENSHOT.png)
+
 5. Evidence of Prometheus Server. [URL05]
+
+![URL05_SCREENSHOT](screenshots/URL05_SCREENSHOT.png)
+
 
 ## Screenshots
 
