@@ -16,7 +16,7 @@
 
     ![URL02_SCREENSHOT](screenshots/URL02_SCREENSHOT.png)
 
-3. Cloudfront CDN [URL03] [Cloudfront URL](https://du2suqh3yregj.cloudfront.net/)
+3. Cloudfront CDN [URL03] 
 
 - Provide a screenshot showing the evidence of deployed and functioning front-end application in CloudFront (aka, your production front-end). [URL03_SCREENSHOT]
     ![URL03_SCREENSHOT](screenshots/URL03_SCREENSHOT.png)
@@ -72,4 +72,3 @@
 
 12. Provide a screenshot of an alert that was sent by Prometheus. [SCREENSHOT12]
 ![SCREENSHOT12](screenshots/SCREENSHOT12.png)
-
